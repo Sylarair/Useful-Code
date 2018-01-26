@@ -104,7 +104,7 @@ def download_files(infile):
 			else:
 				os.system('wget -P {} -c {}'.format(store_data_path, link))
 
-			os.system('cat {} > {}'.format('{}/{}.{}'.format(store_data_path, exp_id, postfix), '{}/{}_{}.{}'.format(store_data_path, tissue_last, rep, postfix)))
+			os.system('cat {} > {}'.format('{}/{}.{}'.format(store_data_path, id, postfix), '{}/{}_{}.{}'.format(store_data_path, tissue_last, rep, postfix)))
 		else:
 			print('Line{} was skipped! It was {}'.format(i, Array['Assembly'][i]))
 
