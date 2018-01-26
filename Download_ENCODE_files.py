@@ -11,10 +11,10 @@ import time
 
 encode_data_path = '/data/projects/encode/data'
 version = '0.1'
-parser = argparse.ArguementParser()
-parser.add_arguement('-i', '--inputFile',description='the input information files for download datasets',required=True)
-parser.add_arguement('-O', '--outdir',description='the out directory for download datasets',required=True)
-parser.add_arguement('-A', '--assembly',description='Choosed genome',default='mm10')
+parser = argparse.ArgumentParser()
+parser.add_argument('-i', '--inputFile',help='the input information files for download datasets',required=True)
+parser.add_argument('-O', '--outdir',help='the out directory for download datasets',required=True)
+parser.add_argument('-A', '--assembly',help='Choosed genome',default='mm10')
 args = parser.parse_args()
 
 def mkdir(path):
@@ -24,7 +24,7 @@ def mkdir(path):
 		pass
 
 def Load_file(infile):
-	os.system('grep -v 'bam' {} | grep -v 'unfiltered alignments' | grep -v 'signal p-value' | grep -v 'strand signal of all reads' > {}'.format(infile, infile + '.temp.bed'))
+	os.system("grep -v 'bam' {} | grep -v 'unfiltered alignments' | grep -v 'signal p-value' | grep -v 'strand signal of all reads' > {}".format(infile, infile + '.temp.bed'))
 	mat = pd.read_table(infile + '.temp.bed')#.values
 	# mat = []
 	return mat
@@ -56,12 +56,12 @@ def download_files(infile):
 			Type = Array['Output type'][i]
 			exp_id = Array['Experiment accession'][i]
 			exp_type = Array['Assay'][i]
-			tissue = Array['Biosample term name'][i]
-			Date = Array['Biosample Age'][i]
-			treatment = Array['Biosample treatments'][i]
-			subcellular = Array['Biosample subcellular fraction term name'][i]
-			phase = Array['Biosample phase'][i]
-			synchronization_stage = Array['Biosample synchronization stage'][i]
+			tissue = '_'.join(Array['Biosample term name'][i].split(' '))
+			Date = '_'.join(Array['Biosample Age'][i].split(' '))
+			treatment = '_'.join(Array['Biosample treatments'][i].split(' '))
+			subcellular = '_'.join(Array['Biosample subcellular fraction term name'][i].split(' '))
+			phase = '_'.join(Array['Biosample phase'][i].split(' '))
+			synchronization_stage = '_'.join(Array['Biosample synchronization stage'][i].split(' '))
 			target = Array['Experiment target'][i]
 			rep = Array['Biological replicate(s)'][i]
 			link = Array['File download URL'][i]
@@ -74,7 +74,7 @@ def download_files(infile):
 				exp_type = exp_type
 
 			if postfix not in ['bam', 'bed', 'bigWig']:
-				postfix = link.split('/').split('.')[-1]
+				postfix = link.split('/')[-1].split('.')[-1]
 			else:
 				postfix = postfix
 
@@ -87,7 +87,7 @@ def download_files(infile):
 
 			tissue_last = ''
 			for _itm in keywords:
-				if math.isnan(_itm):
+				if str(_itm) == 'nan':
 					pass
 				else:
 					tissue_last += '_' + _itm
@@ -95,7 +95,7 @@ def download_files(infile):
 			store_data_path = args.outdir + '/' + exp_type + '/' + tissue_last
 			mkdir(store_data_path)
 
-			if os.path.exists('{}/{}/{}.{}'.format(encode_data_path, exp_id, id)):
+			if os.path.exists('{}/{}/{}.{}'.format(encode_data_path, exp_id, id, postfix)):
 				os.system('cp -r {} {}'.format('{}/{}/{}.{}'.format(encode_data_path, exp_id, id, postfix), store_data_path))
 			else:
 				os.system('wget -P {} -c {}'.format(store_data_path, link))
