@@ -56,12 +56,12 @@ def download_files(infile):
 			Type = Array['Output type'][i]
 			exp_id = Array['Experiment accession'][i]
 			exp_type = Array['Assay'][i]
-			tissue = '_'.join(Array['Biosample term name'][i].split(' '))
-			Date = '_'.join(Array['Biosample Age'][i].split(' '))
-			treatment = '_'.join(Array['Biosample treatments'][i].split(' '))
-			subcellular = '_'.join(Array['Biosample subcellular fraction term name'][i].split(' '))
-			phase = '_'.join(Array['Biosample phase'][i].split(' '))
-			synchronization_stage = '_'.join(Array['Biosample synchronization stage'][i].split(' '))
+			tissue = '_'.join(str(Array['Biosample term name'][i]).split(' '))
+			Date = '_'.join(str(Array['Biosample Age'][i]).split(' '))
+			treatment = '_'.join(str(Array['Biosample treatments'][i]).split(' '))
+			subcellular = '_'.join(str(Array['Biosample subcellular fraction term name'][i]).split(' '))
+			phase = '_'.join(str(Array['Biosample phase'][i]).split(' '))
+			synchronization_stage = '_'.join(str(Array['Biosample synchronization stage'][i]).split(' '))
 			target = Array['Experiment target'][i]
 			rep = Array['Biological replicate(s)'][i]
 			link = Array['File download URL'][i]
@@ -73,8 +73,12 @@ def download_files(infile):
 			else:
 				exp_type = exp_type
 
-			if postfix not in ['bam', 'bed', 'bigWig']:
+			if postfix not in ['bam', 'bed.gz', 'bigWig']:
 				postfix = link.split('/')[-1].split('.')[-1]
+				if postfix == 'gz':
+					postfix = 'bed.gz'
+				else:
+					postfix = postfix
 			else:
 				postfix = postfix
 
@@ -85,8 +89,8 @@ def download_files(infile):
 			else:
 				rep = 'rep' + rep
 
-			tissue_last = ''
-			for _itm in keywords:
+			tissue_last = '' + keywords[0]
+			for _itm in keywords[1:]:
 				if str(_itm) == 'nan':
 					pass
 				else:
