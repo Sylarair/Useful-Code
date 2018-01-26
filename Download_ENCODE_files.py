@@ -24,7 +24,7 @@ def mkdir(path):
 		pass
 
 def Load_file(infile):
-	mat = pd.read_table(infile, nrows=100)#.values
+	mat = pd.read_table(infile)#.values
 	# mat = []
 	return mat
 
