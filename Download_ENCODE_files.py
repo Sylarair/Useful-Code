@@ -10,7 +10,7 @@ import math
 import time
 
 encode_data_path = '/data/projects/encode/data'
-
+version = '0.1'
 parser = argparse.ArguementParser()
 parser.add_arguement('-i', '--inputFile',description='the input information files for download datasets',required=True)
 parser.add_arguement('-O', '--outdir',description='the out directory for download datasets',required=True)
