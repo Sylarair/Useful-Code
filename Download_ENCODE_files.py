@@ -69,7 +69,7 @@ def download_files(infile):
 
 			if exp_type == 'ChIP-seq':
 				exp_type = target.split('-')[0]
-			else
+			else:
 				exp_type = exp_type
 
 			if postfix not in ['bam', 'bed', 'bigWig']:
@@ -79,7 +79,7 @@ def download_files(infile):
 
 			if rep == '1, 2' and Type == 'replicated peaks':
 				rep = 'final'
-			elif rep == '1, 2'
+			elif rep == '1, 2':
 				rep = 'rep0'
 			else:
 				rep = 'rep' + rep
@@ -89,7 +89,7 @@ def download_files(infile):
 				if math.isnan(_itm):
 					pass
 				else:
-					tissue_last += '_' + itm
+					tissue_last += '_' + _itm
 
 			store_data_path = args.outdir + '/' + exp_type + '/' + tissue_last
 			mkdir(store_data_path)
