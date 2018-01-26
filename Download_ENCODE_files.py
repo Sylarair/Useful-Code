@@ -24,7 +24,8 @@ def mkdir(path):
 		pass
 
 def Load_file(infile):
-	mat = pd.read_table(infile)#.values
+	os.system('grep -v 'bam' {} | grep -v 'unfiltered alignments' | grep -v 'signal p-value' | grep -v 'strand signal of all reads' > {}'.format(infile, infile + '.temp.bed'))
+	mat = pd.read_table(infile + '.temp.bed')#.values
 	# mat = []
 	return mat
 
